@@ -58,12 +58,16 @@ public class ControlInscripcion {
         String resultado;
         Inscripcion inscripcion = getInscripcion(idEdicion, idAlumno);
         if (inscripcion == null) {
-            inscripcion = new Inscripcion();
-            inscripcion.setInscripcionPK(new InscripcionPK(idEdicion, idAlumno));
-            inscripcion.setFechaInscripcion(fechaInscripcion);
-            inscripcion.setNota(nota);
-            manejadorDatos.save(inscripcion);
-            resultado = "Inscripcion guardada : [" + idEdicion + " - " + idAlumno + "]";
+            if (esDocente(idAlumno, idEdicion)) {
+                resultado = "El alumno no puede ser docente a la vez : [" + idEdicion + " - " + idAlumno + "]";
+            } else {
+                inscripcion = new Inscripcion();
+                inscripcion.setInscripcionPK(new InscripcionPK(idEdicion, idAlumno));
+                inscripcion.setFechaInscripcion(fechaInscripcion);
+                inscripcion.setNota(nota);
+                manejadorDatos.save(inscripcion);
+                resultado = "Inscripcion guardada : [" + idEdicion + " - " + idAlumno + "]";
+            }
         } else {
             resultado = "Inscripcion duplicada : [" + idEdicion + " - " + idAlumno + "]";
         }
@@ -97,12 +101,17 @@ public class ControlInscripcion {
 
     private Inscripcion getInscripcion(String idEdicion, Integer idAlumno) {
         List<Inscripcion> inscripciones = manejadorDatos.list(Inscripcion.class, " WHERE t.inscripcionPK.idEdicion = '" + idEdicion + "' AND t.inscripcionPK.idAlumno = " + idAlumno);
-        System.out.println(" WHERE t.inscripcionPK.idEdicion = '" + idEdicion + "' AND t.inscripcionPK.idAlumno = " + idAlumno + " : "+inscripciones.size());
         Inscripcion inscripcion = null;
-        
+
         if (!inscripciones.isEmpty()) {
             inscripcion = inscripciones.get(0);
         }
         return inscripcion;
+    }
+
+    private boolean esDocente(Integer idAlumno, String idEdicion) {
+        List<Empleado> docentes = manejadorDatos.list("SELECT e FROM Empleado e "
+                + "WHERE e.ci = " + idAlumno + " AND e.ci IN (SELECT ed.docente.ci FROM Edicion ed WHERE ed.id='" + idEdicion + "' )");
+        return !docentes.isEmpty();
     }
 }

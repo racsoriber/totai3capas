@@ -473,16 +473,17 @@ private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private class DocenteComboRenderer extends JLabel implements ListCellRenderer {
 
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
-            if (isSelected) {
-                setBackground(list.getSelectionBackground());
-                setForeground(list.getSelectionForeground());
-            } else {
-                setBackground(list.getBackground());
-                setForeground(list.getForeground());
+            if (value != null) {
+                if (isSelected) {
+                    setBackground(list.getSelectionBackground());
+                    setForeground(list.getSelectionForeground());
+                } else {
+                    setBackground(list.getBackground());
+                    setForeground(list.getForeground());
+                }
+                Object[] selected = (Object[]) value;
+                setText(selected[1].toString());
             }
-            Object[] selected = (Object[]) value;
-            setText(selected[1].toString());
             return this;
         }
     }

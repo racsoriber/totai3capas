@@ -71,14 +71,14 @@ public class AbmInscripcion extends javax.swing.JPanel {
 
         jLabel1.setText("Edicion:");
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 0, 255))); // NOI18N
-        setForeground(new java.awt.Color(0, 0, 0));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 255))); // NOI18N
 
         paneEdicion.setBorder(javax.swing.BorderFactory.createTitledBorder("Campos"));
 
         comboEdicion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         comboAlumnos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboAlumnos.setEnabled(false);
 
         jLabel2.setText("Alumno:");
 
@@ -259,6 +259,7 @@ public class AbmInscripcion extends javax.swing.JPanel {
         Integer alumnoId = Integer.parseInt(alumno[0].toString());
         String resultado = controlInscripcion.addInscripcion(edicion, alumnoId, new Date(), 0);
         comboEdicion.setSelectedItem("");
+        comboAlumnos.setEnabled(false);
         cargarDatos();
         JOptionPane.showMessageDialog(this, resultado);
     }
@@ -295,6 +296,7 @@ public class AbmInscripcion extends javax.swing.JPanel {
         Object edicion = comboEdicion.getSelectedItem();
         if (edicion != null) {
             cargarDatos();
+            comboAlumnos.setEnabled(true);
         }
     }
 
@@ -307,6 +309,7 @@ public class AbmInscripcion extends javax.swing.JPanel {
     private void nuevo() {
         enableModificar(false);
         comboEdicion.setSelectedItem("");
+        comboAlumnos.setEnabled(false);
     }
 
     private void enableModificar(boolean enable) {
@@ -343,6 +346,7 @@ public class AbmInscripcion extends javax.swing.JPanel {
         Integer nota = Integer.parseInt(txtNota.getText().trim());
         String resultado = controlInscripcion.modificarInscripcion(edicion, alumnoId, nota);
         comboEdicion.setSelectedItem("");
+        comboAlumnos.setEnabled(false);
         cargarDatos();
         JOptionPane.showMessageDialog(this, resultado);
     }
@@ -353,6 +357,7 @@ public class AbmInscripcion extends javax.swing.JPanel {
         Integer alumnoId = Integer.parseInt(alumno[0].toString());
         String resultado = controlInscripcion.delInscripcion(edicion, alumnoId);
         comboEdicion.setSelectedItem("");
+        comboAlumnos.setEnabled(false);
         cargarDatos();
         JOptionPane.showMessageDialog(this, resultado);
     }
